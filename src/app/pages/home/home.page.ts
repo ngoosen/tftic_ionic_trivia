@@ -1,8 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonRange, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
+
+interface IParams {
+  amount: number;
+  category?: string;
+  difficulty?: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -18,7 +25,7 @@ export class HomePage implements OnInit {
   selectedDifficulty!: string;
   selectedAmount: number = 5;
 
-  constructor(private _api: ApiService) { }
+  constructor(private _api: ApiService, private _router: Router) { }
 
   ngOnInit() {
     this.getCategories();
@@ -48,13 +55,26 @@ export class HomePage implements OnInit {
   }
 
   startGame() {
-    this._api.getQuestions(this.selectedAmount, this.selectedCategory, this.selectedDifficulty).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (e) => {
-        console.log(e);
-      },
+    let params: IParams = {
+      amount: this.selectedAmount,
+    };
+
+    if (this.selectedCategory) {
+      params = {
+        ...params,
+        category: this.selectedCategory,
+      };
+    }
+
+    if (this.selectedDifficulty) {
+      params = {
+        ...params,
+        difficulty: this.selectedDifficulty,
+      };
+    }
+
+    this._router.navigate(["quizz",], {
+      queryParams: params,
     });
   }
 }
