@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
 import { QuizzService } from 'src/app/services/quizz.service';
 
@@ -11,7 +11,7 @@ import { QuizzService } from 'src/app/services/quizz.service';
   templateUrl: './quizz.page.html',
   styleUrls: ['./quizz.page.scss'],
   standalone: true,
-  imports: [IonItem, IonRadio, IonRadioGroup, IonCardSubtitle, IonButton, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonItem, IonRadio, IonRadioGroup, IonCardSubtitle, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class QuizzPage implements OnInit {
   questions: ITriviaQuestion[] = [];
@@ -19,12 +19,12 @@ export class QuizzPage implements OnInit {
 
   selectedAnswer: string = "";
   selectedAnswerIsCorrect: boolean = false;
-  correctAnswersNumber = 0;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _api: ApiService,
-    private _quizzService: QuizzService
+    private _quizzService: QuizzService,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -62,7 +62,12 @@ export class QuizzPage implements OnInit {
             this.currentQuestionIndex = data.currentQuestionIndex;
           }, 3000);
         } else {
-          this.correctAnswersNumber = data.score;
+          const stringifiedParams = JSON.stringify(data);
+          this._router.navigate(["results"], {
+            queryParams: {
+              params: stringifiedParams,
+            }
+          });
         }
       }
     });
