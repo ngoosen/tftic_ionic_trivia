@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Quizz</ion-title>
+    <ion-progress-bar [value]="(currentQuestionIndex / questions.length)"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 

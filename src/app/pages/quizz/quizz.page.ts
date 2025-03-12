@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonProgressBar, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
 import { QuizzService } from 'src/app/services/quizz.service';
 
@@ -11,7 +11,7 @@ import { QuizzService } from 'src/app/services/quizz.service';
   templateUrl: './quizz.page.html',
   styleUrls: ['./quizz.page.scss'],
   standalone: true,
-  imports: [IonItem, IonRadio, IonRadioGroup, IonCardSubtitle, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonProgressBar, IonItem, IonRadio, IonRadioGroup, IonCardSubtitle, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class QuizzPage implements OnInit {
   questions: ITriviaQuestion[] = [];
