@@ -103,5 +103,6 @@ export class QuizzService {
 
   private async _saveGameResult(result: IResult) {
     await this._dbService.addToHistory({ ...result, total_questions: result.totalQuestions, });
+    this._gameState.next(this._initialState);
   }
 }
