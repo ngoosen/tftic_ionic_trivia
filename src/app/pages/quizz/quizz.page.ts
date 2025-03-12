@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
+import { QuizzService } from 'src/app/services/quizz.service';
 
 @Component({
   selector: 'app-quizz',
@@ -20,13 +21,19 @@ export class QuizzPage implements OnInit {
   selectedAnswerIsCorrect: boolean = false;
   correctAnswersNumber = 0;
 
-  constructor(private _activatedRoute: ActivatedRoute, private _api: ApiService) { }
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _api: ApiService,
+    private _quizzService: QuizzService
+  ) { }
 
   ngOnInit() {
-    const params = this._activatedRoute.snapshot.queryParams;
-    this._api.getQuestions(params["amount"], params["category"], params["difficulty"]).subscribe({
+    const { amount, category, difficulty } = this._activatedRoute.snapshot.queryParams;
+
+    this._api.getQuestions(amount, category, difficulty).subscribe({
       next: (data) => {
         this.questions = data;
+        this._quizzService.initGame(data, category, difficulty);
       },
       error: (e) => {
         console.log(e);
@@ -36,25 +43,28 @@ export class QuizzPage implements OnInit {
 
   submitAnswer(event: CustomEvent) {
     if (this.selectedAnswer !== "") return;
+
     const answer = event.detail.value;
+    const { isCorrect, } = this._quizzService.submitAnswer(answer);
 
     this.selectedAnswer = answer;
-    this.selectedAnswerIsCorrect = answer === this.questions[this.currentQuestionIndex].correct_answer;
+    this.selectedAnswerIsCorrect = isCorrect;
 
     this._nextQuestion();
   }
 
   private _nextQuestion() {
-    if (this.questions[this.currentQuestionIndex + 1]) {
-      if (this.selectedAnswerIsCorrect) {
-        this.correctAnswersNumber++;
+    this._quizzService.getGameState().subscribe({
+      next: (data) => {
+        if (!data.gameIsOver) {
+          setTimeout(() => {
+            this.selectedAnswer = "";
+            this.currentQuestionIndex = data.currentQuestionIndex;
+          }, 3000);
+        } else {
+          this.correctAnswersNumber = data.score;
+        }
       }
-
-      setTimeout(() => {
-        this.selectedAnswer = "";
-        this.selectedAnswerIsCorrect = false;
-        this.currentQuestionIndex++;
-      }, 3000);
-    }
+    });
   }
 }
