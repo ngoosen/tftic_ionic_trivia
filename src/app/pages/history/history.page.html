@@ -1,13 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>history</ion-title>
+    <ion-title>Game history</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">history</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (gameHistory.length === 0) {
+    <ion-title>Aucune partie enregistrée.</ion-title>
+  }
+  @else {
+    @for (game of gameHistory; track $index) {
+      <ion-card color="light">
+        <ion-card-header>
+          @if (game.date) {
+            <ion-card-subtitle>
+              {{ getDate(game.date) | date:"dd/MM/YYYY HH:mm" }}
+            </ion-card-subtitle>
+          }
+
+          <ion-card-title>
+            Score : {{ game.score }} / {{ game.total_questions }}
+            <ion-badge [color]="(game.score / game.total_questions < .31) ? 'danger' : ((game.score / game.total_questions < .71) ? 'warning' : 'success')">{{ game.score / game.total_questions * 100 }}%</ion-badge>
+          </ion-card-title>
+        </ion-card-header>
+
+        @if (game.category || game.difficulty) {
+          <ion-card-content>
+            <ion-list>
+              @if (game.category) {
+                <ion-item lines="none">
+                  <ion-label>Catégorie : </ion-label>
+                  <ion-badge color="medium">{{ getCategoryName(game.category) }}</ion-badge>
+                </ion-item>
+              }
+
+              @if (game.difficulty) {
+                <ion-item lines="none">
+                  <ion-label>Difficulté : </ion-label>
+                  <ion-badge [ngClass]="game.difficulty">{{ game.difficulty | titlecase }}</ion-badge>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card-content>
+        }
+      </ion-card>
+    }
+  }
 </ion-content>
