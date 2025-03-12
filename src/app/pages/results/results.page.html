@@ -1,13 +1,65 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>results</ion-title>
+    <ion-title>Results</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">results</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-title class="score_title" color="secondary">
+        Votre score est de {{ gameState.score }} / {{ gameState.totalQuestions }}
+      </ion-title>
+
+      <br />
+
+      @if (category !== "") {
+        <ion-item lines="none">
+          <ion-label>Catégorie: </ion-label>
+          <ion-badge color="tertiary">{{ category }}</ion-badge>
+        </ion-item>
+      }
+
+      @if (gameState.difficulty && gameState.difficulty !== "") {
+        <ion-item lines="full">
+          <ion-label>Difficulté: </ion-label>
+          <ion-badge [ngClass]="gameState.difficulty">{{ gameState.difficulty | titlecase }}</ion-badge>
+        </ion-item>
+      }
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-title>Résumé de la partie:</ion-title>
+
+      <ion-list>
+        @for (question of gameState.answers; track $index) {
+          <ion-item>
+            <ion-list>
+              <ion-list-header>
+                <h2>
+                  {{ question.question }}
+                </h2>
+              </ion-list-header>
+
+              <br/>
+
+              <ion-item [color]="question.correct ? 'success' : 'danger'">
+                Votre réponse: {{ question.userAnswer }}
+              </ion-item>
+
+              @if (!question.correct) {
+                <ion-item color="success">
+                  Réponse correcte: {{ question.correctAnswer }}
+                </ion-item>
+              }
+            </ion-list>
+          </ion-item>
+        }
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" size="large" href="/home">
+    Rejouer
+  </ion-button>
 </ion-content>
