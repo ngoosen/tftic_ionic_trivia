@@ -53,8 +53,4 @@ export class HistoryPage implements OnInit {
     const date = new Date(timestamp * 1000);
     return date;
   }
-
-  getPercentage(score: number, total: number) {
-    return score / total * 100;
-  }
 }
