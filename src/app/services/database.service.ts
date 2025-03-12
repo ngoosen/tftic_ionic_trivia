@@ -6,6 +6,7 @@ export interface IGame {
   difficulty: string;
   score: number;
   total_questions: number;
+  date?: number
 }
 
 @Injectable({
