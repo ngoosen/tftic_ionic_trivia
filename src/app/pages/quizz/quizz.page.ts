@@ -18,6 +18,7 @@ export class QuizzPage implements OnInit {
 
   selectedAnswer: string = "";
   selectedAnswerIsCorrect: boolean = false;
+  correctAnswersNumber = 0;
 
   constructor(private _activatedRoute: ActivatedRoute, private _api: ApiService) { }
 
@@ -44,6 +45,10 @@ export class QuizzPage implements OnInit {
 
   private _nextQuestion() {
     if (this.questions[this.currentQuestionIndex + 1]) {
+      if (this.selectedAnswerIsCorrect) {
+        this.correctAnswersNumber++;
+      }
+
       setTimeout(() => {
         this.selectedAnswer = "";
         this.selectedAnswerIsCorrect = false;

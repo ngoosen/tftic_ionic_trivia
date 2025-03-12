@@ -2,6 +2,11 @@ ion-title.game_over {
   margin-top: 50px;
   text-align: center;
   font-size: 30px;
+
+  &:last-of-type {
+    margin-top: 20px;
+    font-size: 20px;
+  }
 }
 
 ion-button.game_over {
