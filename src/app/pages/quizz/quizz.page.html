@@ -1,13 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>quizz</ion-title>
+    <ion-title>Quizz</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">quizz</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+@if (questions.length > 0) {
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ questions[currentQuestionIndex].question }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        @for (answer of questions[currentQuestionIndex].all_answers; track $index) {
+            <ion-button expand="block" size="large" (click)="submitAnswer(answer)" [color]="answer === selectedAnswer ? (selectedAnswerIsCorrect ? 'success' : 'danger') : ''">
+              {{ answer }}
+            </ion-button>
+        }
+      </ion-list>
+
+      @if (selectedAnswer !== "" && !selectedAnswerIsCorrect) {
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>
+              La réponse correcte était:
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-card-title>
+              {{ questions[currentQuestionIndex].correct_answer }}
+            </ion-card-title>
+          </ion-card-content>
+        </ion-card>
+      }
+    </ion-card-content>
+  </ion-card>
+
+  @if (selectedAnswer !== "" && currentQuestionIndex === questions.length - 1) {
+    <ion-title color="secondary" class="game_over">
+      La partie est terminée!
+    </ion-title>
+    <ion-button expand="block" color="tertiary" size="large" class="game_over" href="/home">
+      Rejouer
+    </ion-button>
+  }
+}
+
 </ion-content>

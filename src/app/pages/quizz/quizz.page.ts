@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonList, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
 
 @Component({
@@ -10,10 +10,14 @@ import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
   templateUrl: './quizz.page.html',
   styleUrls: ['./quizz.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonCardSubtitle, IonButton, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonList]
 })
 export class QuizzPage implements OnInit {
   questions: ITriviaQuestion[] = [];
+  currentQuestionIndex: number = 0;
+
+  selectedAnswer: string = "";
+  selectedAnswerIsCorrect: boolean = false;
 
   constructor(private _activatedRoute: ActivatedRoute, private _api: ApiService) { }
 
@@ -21,7 +25,7 @@ export class QuizzPage implements OnInit {
     const params = this._activatedRoute.snapshot.queryParams;
     this._api.getQuestions(params["amount"], params["category"], params["difficulty"]).subscribe({
       next: (data) => {
-        console.log("🚀 ~ QuizzPage ~ this._api.getQuestions ~ data:", data);
+        this.questions = data;
       },
       error: (e) => {
         console.log(e);
@@ -29,4 +33,22 @@ export class QuizzPage implements OnInit {
     });
   }
 
+  submitAnswer(answer: string) {
+    if (this.selectedAnswer !== "") return;
+
+    this.selectedAnswer = answer;
+    this.selectedAnswerIsCorrect = answer === this.questions[this.currentQuestionIndex].correct_answer;
+
+    this._nextQuestion();
+  }
+
+  private _nextQuestion() {
+    if (this.questions[this.currentQuestionIndex + 1]) {
+      setTimeout(() => {
+        this.selectedAnswer = "";
+        this.selectedAnswerIsCorrect = false;
+        this.currentQuestionIndex++;
+      }, 3000);
+    }
+  }
 }
