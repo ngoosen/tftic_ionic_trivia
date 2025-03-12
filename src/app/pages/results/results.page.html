@@ -7,14 +7,22 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-title class="score_title" color="secondary">
-        Votre score est de {{ gameState.score }} / {{ gameState.totalQuestions }}
-      </ion-title>
-
-      <br />
+      <ion-item  [lines]="(gameState.difficulty && gameState.difficulty !== '') ? 'none' : 'full'">
+          <ion-title class="score_title" color="secondary">
+            <ion-label>
+              Votre score est de {{ gameState.score }} / {{ gameState.totalQuestions }}
+          </ion-label>
+          <ion-progress-bar [value]="gameState.score / gameState.totalQuestions" color="success"></ion-progress-bar>
+          <ion-card-subtitle>
+            Soit {{ gameState.score / gameState.totalQuestions * 100 }} % de réponses correctes
+          </ion-card-subtitle>
+        </ion-title>
+      </ion-item>
 
       @if (category !== "") {
-        <ion-item lines="none">
+        <br />
+
+        <ion-item [lines]="(gameState.difficulty && gameState.difficulty !== '') ? 'none' : 'full'">
           <ion-label>Catégorie: </ion-label>
           <ion-badge color="tertiary">{{ category }}</ion-badge>
         </ion-item>

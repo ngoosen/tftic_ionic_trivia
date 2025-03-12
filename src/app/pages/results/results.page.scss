@@ -2,6 +2,21 @@
   text-align: center;
   font-size: 25px;
   font-weight: bold;
+
+  ion-progress-bar {
+    margin-top: 10px;
+    background-color: #ff0000;
+    border-radius: 50px;
+  }
+
+  ion-card-subtitle {
+    margin: 10px 0;
+  }
+}
+
+ion-badge {
+  padding: 7px 15px;
+  font-size: 17px;
 }
 
 .easy {
@@ -14,9 +29,4 @@
 
 .hard {
   background-color: #ff0000;
-}
-
-ion-badge {
-  padding: 7px 15px;
-  font-size: 17px;
 }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonContent, IonHeader, IonItem, IonLabel, IonList, IonListHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonListHeader, IonProgressBar, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
 import { IQuizz } from 'src/app/services/quizz.service';
 
@@ -11,7 +11,7 @@ import { IQuizz } from 'src/app/services/quizz.service';
   templateUrl: './results.page.html',
   styleUrls: ['./results.page.scss'],
   standalone: true,
-  imports: [IonButton, IonBadge, IonLabel, IonListHeader, IonItem, IonList, IonCardContent, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonCardSubtitle, IonProgressBar, IonButton, IonBadge, IonLabel, IonListHeader, IonItem, IonList, IonCardContent, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class ResultsPage implements OnInit {
   gameState!: IQuizz;
