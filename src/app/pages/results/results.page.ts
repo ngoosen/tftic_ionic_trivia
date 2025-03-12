@@ -22,7 +22,6 @@ export class ResultsPage implements OnInit {
   ngOnInit() {
     const params = this._activatedRoute.snapshot.queryParams;
     this.gameState = JSON.parse(params["params"]);
-    console.log("🚀 ~ ResultsPage ~ ngOnInit ~ this.gameState:", this.gameState);
 
     this._api.getCategories().subscribe({
       next: (data) => {
