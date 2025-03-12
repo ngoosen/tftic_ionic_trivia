@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonList, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonItem, IonRadio, IonRadioGroup, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ApiService, ITriviaQuestion } from 'src/app/services/api.service';
   templateUrl: './quizz.page.html',
   styleUrls: ['./quizz.page.scss'],
   standalone: true,
-  imports: [IonCardSubtitle, IonButton, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonList]
+  imports: [IonItem, IonRadio, IonRadioGroup, IonCardSubtitle, IonButton, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class QuizzPage implements OnInit {
   questions: ITriviaQuestion[] = [];
@@ -34,8 +34,9 @@ export class QuizzPage implements OnInit {
     });
   }
 
-  submitAnswer(answer: string) {
+  submitAnswer(event: CustomEvent) {
     if (this.selectedAnswer !== "") return;
+    const answer = event.detail.value;
 
     this.selectedAnswer = answer;
     this.selectedAnswerIsCorrect = answer === this.questions[this.currentQuestionIndex].correct_answer;

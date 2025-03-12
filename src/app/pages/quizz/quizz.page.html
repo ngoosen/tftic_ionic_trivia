@@ -16,13 +16,13 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list>
+      <ion-radio-group (ionChange)="submitAnswer($event)">
         @for (answer of questions[currentQuestionIndex].all_answers; track $index) {
-            <ion-button expand="block" size="large" (click)="submitAnswer(answer)" [color]="answer === selectedAnswer ? (selectedAnswerIsCorrect ? 'success' : 'danger') : ''">
-              {{ answer }}
-            </ion-button>
+          <ion-item [color]="answer === selectedAnswer ? (selectedAnswerIsCorrect ? 'success' : 'danger') : ''">
+            <ion-radio [value]="answer" [disabled]="selectedAnswer !== ''">{{ answer }}</ion-radio>
+          </ion-item>
         }
-      </ion-list>
+      </ion-radio-group>
 
       @if (selectedAnswer !== "" && !selectedAnswerIsCorrect) {
         <ion-card>
